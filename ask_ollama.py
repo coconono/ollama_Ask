@@ -45,7 +45,7 @@ def main():
     try:
         # Use Ollama CLI to send the question
         result = subprocess.run([
-            "ollama", "run", "llama2", question
+            "ollama", "run", "ministral-3:3b", question
         ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if debug:
             print("--- DEBUG: Ollama CLI stdout ---")
