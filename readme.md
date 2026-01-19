@@ -1,6 +1,8 @@
-# Ollama Ask
+# Eyeball Jar
 
 A simple python script to talk to an Ollama install on your machine.
+
+I gave it a more meaningful name. 
 
 I had an idea for a trivial task so I put copilot on it. Then I fiddled with it some more.
 
