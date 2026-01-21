@@ -58,7 +58,7 @@ def main():
             for _ in range(10):
                 time.sleep(1)
                 if is_ollama_running():
-                    print("jiggling the eyeballs jar")
+                    print("jiggling the eyeball jar")
                     break
             else:
                 print("Failed to start Ollama.")
@@ -67,7 +67,7 @@ def main():
             print(f"Error starting Ollama: {e}")
             sys.exit(1)
     else:
-        print("jiggling the eyeballs jar")
+        print("jiggling the eyeball jar")
     try:
         # Use Ollama CLI to send the question
         if not model:
@@ -83,7 +83,7 @@ def main():
             print(result.stderr)
             print(f"--- DEBUG: Return code: {result.returncode} ---")
         if result.returncode == 0:
-            print("The eyeball speaks:")
+            print("The eyeballs speak:")
             print(result.stdout.strip())
         else:
             print(f"Failed to get response from Ollama CLI. Error: {result.stderr.strip()}")
