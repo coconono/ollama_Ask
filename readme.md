@@ -34,6 +34,20 @@ The model setting will be saved in `settings.cfg` and used as the default for fu
 model = mistral:7b
 ```
 
+### Interactive mode
+
+Add `--interactive` to enter a chat loop with the Ollama model. Each prompt is sent as a new question, and you can exit by typing `exit` or `quit`.
+
+```sh
+python3 eyeball_jar.py --interactive
+```
+
+You can combine with `--model` and `--debug`:
+
+```sh
+python3 eyeball_jar.py --interactive --model mistral:7b --debug
+```
+
 ### Debug mode
 
 Add `--debug` to print extra information about the Ollama CLI call:

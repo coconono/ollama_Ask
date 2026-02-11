@@ -18,10 +18,14 @@ def main():
     debug = False
     model = None
     args = sys.argv[1:]
+    interactive = False
     # Parse flags
     if '--debug' in args:
         debug = True
         args.remove('--debug')
+    if '--interactive' in args:
+        interactive = True
+        args.remove('--interactive')
     if '--model' in args:
         idx = args.index('--model')
         if idx + 1 < len(args):
@@ -44,11 +48,12 @@ def main():
         config.set('ollama', 'model', model)
         with open(config_path, 'w') as f:
             config.write(f)
-    if len(args) < 1:
-        print("Usage: python3 eyeball_jar.py 'Your question here' [--debug] [--model MODEL]")
+    if not interactive and len(args) < 1:
+        print("Usage: python3 eyeball_jar.py 'Your question here' [--debug] [--model MODEL] [--interactive]")
         sys.exit(1)
-    question = args[0]
-    print(f"Question: {question}")
+    if not interactive:
+        question = args[0]
+        print(f"Question: {question}")
     if not is_ollama_running():
         print("Ollama is NOT running. Attempting to start Ollama...")
         try:
@@ -69,24 +74,45 @@ def main():
     else:
         print("jiggling the eyeball jar")
     try:
-        # Use Ollama CLI to send the question
         if not model:
             print("Error: No model specified. Use --model flag or set in settings.cfg.")
             sys.exit(1)
-        result = subprocess.run([
-            "ollama", "run", model, question
-        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        if debug:
-            print("--- DEBUG: Ollama CLI stdout ---")
-            print(result.stdout)
-            print("--- DEBUG: Ollama CLI stderr ---")
-            print(result.stderr)
-            print(f"--- DEBUG: Return code: {result.returncode} ---")
-        if result.returncode == 0:
-            print("The eyeballs speak:")
-            print(result.stdout.strip())
+        if interactive:
+            print("Entering interactive mode. Type 'exit' or 'quit' to leave.")
+            while True:
+                user_input = input("You: ")
+                if user_input.strip().lower() in ["exit", "quit"]:
+                    print("Exiting interactive mode.")
+                    break
+                result = subprocess.run([
+                    "ollama", "run", model, user_input
+                ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                if debug:
+                    print("--- DEBUG: Ollama CLI stdout ---")
+                    print(result.stdout)
+                    print("--- DEBUG: Ollama CLI stderr ---")
+                    print(result.stderr)
+                    print(f"--- DEBUG: Return code: {result.returncode} ---")
+                if result.returncode == 0:
+                    print("Ollama:")
+                    print(result.stdout.strip())
+                else:
+                    print(f"Failed to get response from Ollama CLI. Error: {result.stderr.strip()}")
         else:
-            print(f"Failed to get response from Ollama CLI. Error: {result.stderr.strip()}")
+            result = subprocess.run([
+                "ollama", "run", model, question
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            if debug:
+                print("--- DEBUG: Ollama CLI stdout ---")
+                print(result.stdout)
+                print("--- DEBUG: Ollama CLI stderr ---")
+                print(result.stderr)
+                print(f"--- DEBUG: Return code: {result.returncode} ---")
+            if result.returncode == 0:
+                print("The eyeballs speak:")
+                print(result.stdout.strip())
+            else:
+                print(f"Failed to get response from Ollama CLI. Error: {result.stderr.strip()}")
     except Exception as e:
         print(f"Error communicating with Ollama CLI: {e}")
 
