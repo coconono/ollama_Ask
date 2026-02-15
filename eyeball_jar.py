@@ -95,7 +95,7 @@ def main():
                     print(f"--- DEBUG: Return code: {result.returncode} ---")
                 if result.returncode == 0:
                     print("The eyeballs speak:")
-                    print(result.stdout.strip())
+                    print(f"\033[92m{result.stdout.strip()}\033[0m")
                 else:
                     print(f"Failed to get response from Ollama CLI. Error: {result.stderr.strip()}")
         else:
@@ -110,7 +110,7 @@ def main():
                 print(f"--- DEBUG: Return code: {result.returncode} ---")
             if result.returncode == 0:
                 print("The eyeballs speak:")
-                print(result.stdout.strip())
+                print(f"\033[92m{result.stdout.strip()}\033[0m")
             else:
                 print(f"Failed to get response from Ollama CLI. Error: {result.stderr.strip()}")
     except Exception as e:
