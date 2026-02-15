@@ -94,7 +94,7 @@ def main():
                     print(result.stderr)
                     print(f"--- DEBUG: Return code: {result.returncode} ---")
                 if result.returncode == 0:
-                    print("Ollama:")
+                    print("The eyeballs speak:")
                     print(result.stdout.strip())
                 else:
                     print(f"Failed to get response from Ollama CLI. Error: {result.stderr.strip()}")
